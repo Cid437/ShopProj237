@@ -6,22 +6,26 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
-        Schema::create('customer', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+    Schema::create('customer', function (Blueprint $table) {
+        $table->id('customer_id');
+
+        $table->foreignId('user_id')
+              ->constrained('users')
+              ->cascadeOnDelete();
+
+        $table->string('lname');
+        $table->string('fname');
+        $table->string('addressline');
+        $table->string('zipcode', 20);
+        $table->string('phone', 20);
+        $table->string('image_path')->nullable();
+    });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
-        Schema::dropIfExists('customer');
+    Schema::dropIfExists('customer');
     }
 };

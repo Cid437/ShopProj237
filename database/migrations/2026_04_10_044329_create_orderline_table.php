@@ -6,22 +6,29 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
-        Schema::create('orderline', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+    Schema::create('orderline', function (Blueprint $table) {
+        $table->unsignedBigInteger('orderinfo_id');
+        $table->unsignedBigInteger('item_id');
+        $table->integer('quantity');
+
+        $table->primary(['orderinfo_id', 'item_id']);
+
+        $table->foreign('orderinfo_id')
+              ->references('orderinfo_id')
+              ->on('orderinfo')
+              ->cascadeOnDelete();
+
+        $table->foreign('item_id')
+              ->references('item_id')
+              ->on('item')
+              ->cascadeOnDelete();
+    });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
-        Schema::dropIfExists('orderline');
+    Schema::dropIfExists('orderline');
     }
 };

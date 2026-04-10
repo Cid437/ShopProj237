@@ -6,22 +6,24 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
-        Schema::create('orderinfo', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+    Schema::create('orderinfo', function (Blueprint $table) {
+        $table->id('orderinfo_id');
+
+        $table->foreignId('customer_id')
+              ->constrained('customer', 'customer_id')
+              ->cascadeOnDelete();
+
+        $table->dateTime('date_placed');
+        $table->dateTime('date_shipped')->nullable();
+        $table->decimal('shipping', 10, 2)->default(0);
+        $table->string('status', 50);
+    });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
-        Schema::dropIfExists('orderinfo');
+    Schema::dropIfExists('orderinfo');
     }
 };
